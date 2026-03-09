@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Emmanuel Mainye | front‑end & graphic design</title>
+  <meta name="description" content="Emmanuel Mainye – front‑end web designer, graphic designer (Canva/Figma), web graphic designer. KRA & eCitizen services.">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: whitesmoke;
+      color: #1e1e1e;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 40px; /* space for sticky header */
+    }
+
+    /* ---- preloader overlay (click triggered) ---- */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s;
+      pointer-events: none;
+    }
+    .preloader.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.15);
+      border-top: 6px solid #ff0000;
+      border-right: 6px solid #ff0000;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ---- layout ---- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem; /* reduced vertical padding because header height fixed */
+    }
+
+    /* ---- HEADER – VIVID RED BACKGROUND, 40px HEIGHT, CENTERED LOGO, HAMBURGER LEFT ---- */
+    header {
+      background-color: #ff0000;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 40px;
+      padding: 0 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    /* hamburger icon (left) */
+    .hamburger {
+      width: 40px;
+      cursor: pointer;
+      font-size: 28px;
+      line-height: 40px;
+      color: white;
+      user-select: none;
+      text-align: left;
+    }
+    /* logo centered */
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+    .logo a {
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      line-height: 40px;
+    }
+    .logo span {
+      font-size: 1rem;
+      font-weight: 300;
+      color: white;
+    }
+    /* right placeholder to balance hamburger width (keeps logo truly centered) */
+    .placeholder {
+      width: 40px;
+      height: 40px;
+    }
+
+    /* dropdown menu – hidden by default, black background */
+    .dropdown-menu {
+      position: fixed;
+      top: 40px;
+      left: 0;
+      width: 240px;
+      background-color: #000000;
+      border-radius: 0 0 12px 0;
+      box-shadow: 4px 6px 12px rgba(0,0,0,0.3);
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 999;
+    }
+    .dropdown-menu.show {
+      transform: translateX(0);
+    }
+    .dropdown-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0.5rem 0;
+    }
+    .dropdown-menu li {
+      margin: 0;
+      padding: 0;
+    }
+    .dropdown-menu .btn {
+      display: block;
+      background: transparent;
+      color: white;
+      border: none;
+      box-shadow: none;
+      text-align: left;
+      padding: 0.9rem 1.5rem;
+      margin: 0;
+      border-radius: 0;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #333;
+    }
+    .dropdown-menu .btn:hover {
+      background: #ff0000;
+      color: white;
+      border-bottom-color: #ff0000;
+    }
+    /* remove default button styles for dropdown links */
+    .dropdown-menu .btn {
+      transition: background 0.15s;
+    }
+
+    /* ----- hero section (adjust for fixed header) ----- */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2.5rem;
+      margin: 2rem 0 3rem;
+    }
+    .hero-content {
+      flex: 1 1 300px;
+    }
+    .hero-content h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .hero-highlight {
+      color: #ff0000;
+      border-bottom: 3px solid #ff0000;
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 2rem;
+      color: #2c2c2c;
+    }
+    .hero-image {
+      flex: 0 0 260px;
+      text-align: center;
+    }
+    .profile-img {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      border-radius: 50%;
+      border: 5px solid #ff0000;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+      background: white;
+      object-fit: cover;
+      aspect-ratio: 1/1;
+    }
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    /* general button styles (for other .btn elements) */
+    .btn {
+      display: inline-block;
+      background-color: #ffffff;
+      color: #ff0000;
+      padding: 0.6rem 1.4rem;
+      margin: 0.2rem 0;
+      border: 2px solid #ffffff;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .btn:hover {
+      background-color: #000000;
+      color: #ffffff;
+      border-color: #000000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0,0,0,0.2);
+    }
+    .btn-black {
+      background: #000000;
+      border-color: #000000;
+      color: white;
+    }
+    .btn-black:hover {
+      background: #ff0000;
+      border-color: #ff0000;
+    }
+    .btn-whatsapp {
+      background: #25D366;
+      border-color: #25D366;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-whatsapp i {
+      font-size: 1.3rem;
+    }
+    .btn-whatsapp:hover {
+      background: #128C7E;
+      border-color: #128C7E;
+      color: white;
+    }
+    .btn-outline {
+      background: transparent;
+      color: #ff0000;
+      border: 2px solid #ff0000;
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: #ff0000;
+      color: white;
+      border-color: #ff0000;
+    }
+
+    /* sections */
+    section {
+      margin: 4rem 0;
+    }
+    .section-title {
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      border-left: 10px solid #ff0000;
+      padding-left: 1.5rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 2rem 1.5rem;
+      border-radius: 30px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #e0e0e0;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 30px rgba(255, 0, 0, 0.1);
+      border-color: #ff0000;
+    }
+    .card i {
+      font-size: 2.8rem;
+      color: #ff0000;
+      margin-bottom: 1rem;
+    }
+    .card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+    .card p {
+      color: #3a3a3a;
+      margin-bottom: 1.5rem;
+    }
+    .badge {
+      background: #000;
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    /* extras grid – no prices */
+    .extras-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .extra-card {
+      background: white;
+      border-radius: 40px;
+      padding: 2rem;
+      border-left: 8px solid #ff0000;
+      box-shadow: 0 8px 0 #000000;
+      transition: 0.15s;
+    }
+    .extra-card h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+    }
+
+    /* footer */
+    footer {
+      background: #000000;
+      color: whitesmoke;
+      margin-top: 3rem;
+      padding: 2.5rem 0 1.5rem;
+      text-align: center;
+    }
+    .footer-icons a {
+      color: whitesmoke;
+      font-size: 1.8rem;
+      margin: 0 0.75rem;
+      transition: color 0.2s;
+      display: inline-block;
+    }
+    .footer-icons a:hover {
+      color: #ff0000;
+    }
+    .footer-email {
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+    }
+    .footer-email a {
+      color: #ff0000;
+      text-decoration: none;
+      border-bottom: 1px dotted #ff0000;
+    }
+    .footer-email a:hover {
+      color: white;
+      border-bottom-color: white;
+    }
+
+    @media (max-width: 680px) {
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      .btn-group {
+        justify-content: center;
+      }
+      .profile-img {
+        max-width: 200px;
+      }
+    }
+    @media (max-width: 450px) {
+      .container {
+        padding: 0 1.2rem;
+      }
+      .logo a {
+        font-size: 1.4rem;
+      }
+      .logo span {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- PRELOADER overlay -->
+  <div class="preloader" id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- HEADER: 40px height, hamburger left, centered logo -->
+  <header>
+    <div class="header-flex">
+      <div class="hamburger" id="hamburger">☰</div>
+      <div class="logo">
+        <a href="#">Manu <span>Mainye</span></a>
+      </div>
+      <div class="placeholder"></div> <!-- balances the hamburger -->
+    </div>
+    <!-- dropdown menu (hidden by default) -->
+    <nav class="dropdown-menu" id="dropdownMenu">
+      <ul>
+        <li><a href="#home" class="btn">Home</a></li>
+        <li><a href="#services" class="btn">Services</a></li>
+        <li><a href="#extras" class="btn">Extras</a></li>
+        <li><a href="#contact" class="btn">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- HERO / HOME -->
+    <section id="home">
+      <div class="hero">
+        <div class="hero-content">
+          <h1>I'm <span class="hero-highlight">Emmanuel Mainye</span></h1>
+          <p>
+            <strong>front‑end web designer • graphic designer • web graphic designer</strong><br>
+            I also provide <span style="color:#ff0000; font-weight:600;">online KRA services</span> and 
+            <span style="color:#ff0000; font-weight:600;">eCitizen assistance</span> as extras.
+          </p>
+          <div class="btn-group">
+            <a href="#" class="btn btn-black trigger-preloader">📁 View work</a>
+            <a href="#" class="btn btn-outline trigger-preloader">✉️ Hire me</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img class="profile-img" 
+               src="https://scontent.fnbo18-1.fna.fbcdn.net/v/t39.30808-1/467639731_1086720156437682_9065631500327282277_n.jpg?stp=c0.0.694.694a_dst-jpg_s200x200_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_eui2=AeG8cxEEPQyECseSCtFytznJgAPd9Tx1CaqAA931PHUJqoj-YLdcWYwMX7rehhLVF1RxYlmXv9TNsv7VnFpyg-NJ&_nc_ohc=728j2pj1ZaQQ7kNvwECIKfm&_nc_oc=AdnicNMo16f4OYDvSgEo516jgYcQw-Q-wPeMFFPFUpUkqnzvBRviBWYjRkS1yqmV-aI&_nc_zt=24&_nc_ht=scontent.fnbo18-1.fna&_nc_gid=ZOgLmY8nN1jCvqqBD65ATA&_nc_ss=8&oh=00_Afw42ungpAGLi4KfxECZfItdaGkuZZJuzdYyu7PJ9Dfrvw&oe=69B4DD45"
+               alt="Emmanuel Mainye profile photograph">
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES (graphic design badge: Canva • Figma) -->
+    <section id="services">
+      <h2 class="section-title">what i do best</h2>
+      <div class="card-grid">
+        <div class="card">
+          <i class="fas fa-code"></i>
+          <h3>Front‑end web design</h3>
+          <p>Responsive, W3C compliant interfaces with modern HTML/CSS/JS. Pixel perfect & interactive.</p>
+          <span class="badge">HTML5 • CSS3 • JS</span>
+        </div>
+        <div class="card">
+          <i class="fas fa-paint-brush"></i>
+          <h3>Graphic design</h3>
+          <p>Logos, branding, social media visuals – bold concepts with vivid red & black identity.</p>
+          <span class="badge">Canva • Figma</span>
+        </div>
+        <div class="card">
+          <i class="fas fa-laptop"></i>
+          <h3>Web graphic design</h3>
+          <p>Web‑optimized graphics, UI elements, banners that merge design & code seamlessly.</p>
+          <span class="badge">UI • motion</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXTRAS (KRA + eCitizen) – no prices -->
+    <section id="extras">
+      <h2 class="section-title">extra services</h2>
+      <div class="extras-grid">
+        <div class="extra-card">
+          <i class="fas fa-file-invoice" style="font-size:2.5rem; color:#ff0000;"></i>
+          <h3>KRA services</h3>
+          <p>Online KRA PIN application, tax returns, compliance checks. Fast & reliable assistance.</p>
+          <a href="#" class="btn" style="margin-top:1.5rem;">get KRA help →</a>
+        </div>
+        <div class="extra-card">
+          <i class="fas fa-passport" style="font-size:2.5rem; color:#ff0000;"></i>
+          <h3>eCitizen services</h3>
+          <p>Driving license, passport booking, business registration. I handle the process for you.</p>
+          <a href="#" class="btn" style="margin-top:1.5rem;">start eCitizen →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" style="text-align: center; background: white; padding: 3rem; border-radius: 60px; box-shadow: 0 6px 12px rgba(0,0,0,0.03);">
+      <i class="fas fa-bolt" style="font-size:3rem; color:#ff0000;"></i>
+      <h2 style="font-size:2.5rem; margin:0.5rem 0;">need a designer or KRA help?</h2>
+      <div class="btn-group" style="justify-content: center; margin-top: 1.5rem;">
+        <a href="https://wa.me/254707408066" target="_blank" class="btn btn-whatsapp trigger-preloader" aria-label="Chat on WhatsApp">
+          <i class="fab fa-whatsapp"></i> 0707 408 066
+        </a>
+        <a href="mailto:emmanuelmainye@gmail.com" class="btn btn-outline trigger-preloader">📧 emmanuelmainye@gmail.com</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-icons">
+        <a href="https://www.facebook.com/Emmanuel.Mainye/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.linkedin.com/in/emmanuel-mainye-a464102a2/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://wa.me/254707408066" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      <div class="footer-email">
+        📧 <a href="mailto:emmanuelmainye@gmail.com">emmanuelmainye@gmail.com</a>
+      </div>
+      <p style="margin-top:1.5rem; color:#aaa;">© 2026 Emmanuel Mainye.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      // preloader logic
+      const preloader = document.getElementById('preloader');
+      let hideTimeout = null;
+
+      function showPreloader() {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        preloader.classList.add('visible');
+        hideTimeout = setTimeout(() => {
+          preloader.classList.remove('visible');
+          hideTimeout = null;
+        }, 800);
+      }
+
+      // attach preloader to all .btn elements (including dropdown ones)
+      const allButtons = document.querySelectorAll('.btn');
+      allButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          showPreloader();
+          // if the link is a dropdown menu item, we might want to close the menu
+          // but we'll handle that separately
+        });
+      });
+
+      // hamburger menu toggle
+      const hamburger = document.getElementById('hamburger');
+      const dropdown = document.getElementById('dropdownMenu');
+
+      hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.classList.toggle('show');
+      });
+
+      // close menu when a dropdown link is clicked (optional but nice)
+      const dropdownLinks = document.querySelectorAll('.dropdown-menu .btn');
+      dropdownLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          dropdown.classList.remove('show');
+        });
+      });
+
+      // close menu if clicking outside (optional)
+      document.addEventListener('click', function(event) {
+        if (!hamburger.contains(event.target) && !dropdown.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
